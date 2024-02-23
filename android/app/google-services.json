@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "270863427437",
+    "project_id": "piatopronta",
+    "storage_bucket": "piatopronta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270863427437:android:f0db6e1dc95849e7acdc64",
+        "android_client_info": {
+          "package_name": "com.piattopronta.recipe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270863427437-b1cq121picanmtsq3iatjnm7cu3smelo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piattopronta.recipe",
+            "certificate_hash": "81acbab5d53c6da52fa0f02ac6e7c847ab8a86c6"
+          }
+        },
+        {
+          "client_id": "270863427437-k298gspdfchs5i4b84jtmj1jlqf7coov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaviHKKh8_9C23aS8rh_R7D7Ibs89gDxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270863427437-k298gspdfchs5i4b84jtmj1jlqf7coov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
