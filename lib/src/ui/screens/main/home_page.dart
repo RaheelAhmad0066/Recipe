@@ -32,9 +32,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   String ingredientsString = '';
-  late DateTime
-      lastMessageTime; // Variable to store the timestamp of the last message sent
-  int messagesSent = 0; // Variable to count the number of messages sent
+  // late DateTime
+  //     lastMessageTime; // Variable to store the timestamp of the last message sent
+  // int messagesSent = 0; // Variable to count the number of messages sent
   void sendPrompt() {
     // if (canSendMessage()) {
     // messagesSent++;
@@ -74,27 +74,27 @@ class _HomePageState extends State<HomePage> {
   //   }
   // }
 
-  void showPopup() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Limite di messaggio raggiunto"),
-            content: Text(
-              "Hai raggiunto il limite del messaggio. Si prega di attendere alcune settimane prima di inviare più messaggi.",
-              textAlign: TextAlign.center,
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        });
-  }
+  // void showPopup() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: Text("Limite di messaggio raggiunto"),
+  //           content: Text(
+  //             "Hai raggiunto il limite del messaggio. Si prega di attendere alcune settimane prima di inviare più messaggi.",
+  //             textAlign: TextAlign.center,
+  //           ),
+  //           actions: <Widget>[
+  //             ElevatedButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop(); // Close the dialog
+  //               },
+  //               child: Text("OK"),
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   //method to access toggle recording
   late SharedPreferences _prefs;
@@ -128,9 +128,9 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       selectedFruit = prefs.getString('selectedFruit') ?? '';
       course = prefs.getString('course') ?? '';
-      messagesSent = prefs.getInt('messagesSent') ?? 0;
-      lastMessageTime =
-          DateTime.parse(prefs.getString('lastMessageTime') ?? '');
+      // messagesSent = prefs.getInt('messagesSent') ?? 0;
+      // lastMessageTime =
+      //     DateTime.parse(prefs.getString('lastMessageTime') ?? '');
     });
   }
 
@@ -138,8 +138,8 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('selectedFruit', selectedFruit);
     await prefs.setString('course', course);
-    await prefs.setInt('messagesSent', messagesSent);
-    await prefs.setString('lastMessageTime', lastMessageTime.toIso8601String());
+    // await prefs.setInt('messagesSent', messagesSent);
+    // await prefs.setString('lastMessageTime', lastMessageTime.toIso8601String());
   }
 
   String selectedFruit = '';
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
         builder: ((context) => Container(
               height: h,
               decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.4),
+                  color: Colors.white,
                   borderRadius: BorderRadiusDirectional.only(
                       topEnd: Radius.circular(16),
                       topStart: Radius.circular(16))),
@@ -280,9 +280,10 @@ class _HomePageState extends State<HomePage> {
                           builder: (context, values, child) {
                         selectedFruit = values.selectedFruit;
                         return Wrap(
+                          verticalDirection: VerticalDirection.down,
                           direction: Axis.horizontal,
                           crossAxisAlignment: WrapCrossAlignment.start,
-                          spacing: h * 0.01, // Adjust the spacing as needed
+                          spacing: 5, // Adjust the spacing as needed
                           runSpacing:
                               h * 0.02, // Adjust the run spacing as needed
                           children: List.generate(
@@ -291,6 +292,14 @@ class _HomePageState extends State<HomePage> {
                               return ChoiceChip(
                                 padding: EdgeInsets.all(12),
                                 checkmarkColor: Colors.white,
+                                visualDensity: VisualDensity.comfortable,
+                                showCheckmark: false,
+                                avatar: Image.asset(
+                                  images[
+                                      index], // Get the image path from the map
+                                  width: 24, // Adjust size as needed
+                                  height: 24,
+                                ),
                                 label: Text(ditetype[index]),
                                 selected:
                                     values.selectedFruit == ditetype[index],
@@ -332,24 +341,36 @@ class _HomePageState extends State<HomePage> {
                             runSpacing:
                                 h * 0.02, // Adjust the run spacing as needed
                             children: List.generate(categories.length, (index) {
-                              return ChoiceChip(
-                                checkmarkColor: Colors.white,
-                                label: Text(
-                                  categories[index],
+                              return AnimatedContainer(
+                                duration: Duration(
+                                    milliseconds:
+                                        300), // Adjust the duration as needed
+                                curve:
+                                    Curves.linear, // Adjust the curve as needed
+                                child: ChoiceChip(
+                                  checkmarkColor: Colors.white,
+                                  visualDensity: VisualDensity.comfortable,
+                                  showCheckmark: false,
+                                  avatar: Image.asset(
+                                    chipsimage[
+                                        index], // Get the image path from the map
+                                    width: 24, // Adjust size as needed
+                                    height: 24,
+                                  ),
+                                  label: Text(categories[index]),
+                                  padding: EdgeInsets.all(12),
+                                  selected:
+                                      value.selectedCourse == categories[index],
+                                  labelStyle:
+                                      value.selectedCourse == categories[index]
+                                          ? TextStyle(color: Colors.white)
+                                          : TextStyle(color: Colors.black),
+                                  selectedColor: bgcolor,
+                                  onSelected: (bool selected) {
+                                    value.setSelectedCourse(
+                                        selected ? categories[index] : '');
+                                  },
                                 ),
-                                padding: EdgeInsets.all(12),
-                                selected:
-                                    value.selectedCourse == categories[index],
-                                labelStyle:
-                                    value.selectedCourse == categories[index]
-                                        ? TextStyle(color: Colors.white)
-                                        : TextStyle(color: Colors.black),
-                                selectedColor: bgcolor,
-                                onSelected: (bool selected) {
-                                  value.setSelectedCourse(
-                                    selected ? categories[index] : '',
-                                  );
-                                },
                               );
                             }),
                           );
@@ -369,7 +390,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       SizedBox(
-                        height: h * 0.01,
+                        height: h * 0.02,
                       ),
                       Align(
                         alignment: Alignment.center,
@@ -419,7 +440,7 @@ class _HomePageState extends State<HomePage> {
                         }),
                       ),
                       SizedBox(
-                        height: h * 0.02,
+                        height: h * 0.03,
                       ),
                       Button(
                           onPressed: () {

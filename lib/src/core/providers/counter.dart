@@ -25,7 +25,9 @@ class CourseProvider with ChangeNotifier {
   }
 
   void decrement() {
-    _count--;
-    notifyListeners();
+    if (count > 0) {
+      _count--;
+      notifyListeners();
+    }
   }
 }

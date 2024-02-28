@@ -21,11 +21,11 @@ class LoginController extends GetxController {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       // Navigate to the home page after successful login
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-      Get.snackbar('Login', 'successful login', colorText: Colors.white);
+      Get.snackbar('Login', 'successful login', colorText: Colors.black);
     } catch (e) {
       // Handle login errors
       print("Error signing in: $e");
-      Get.snackbar('Login', e.toString(), colorText: Colors.white);
+      Get.snackbar('Login', e.toString(), colorText: Colors.black);
     } finally {
       isLoading(false);
     }
@@ -50,11 +50,11 @@ class LoginController extends GetxController {
         final User? user = authResult.user;
         Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         Get.snackbar('Google', 'successful Google signin',
-            colorText: Colors.white);
+            colorText: Colors.black);
         return user;
       }
     } catch (error) {
-      Get.snackbar('Google', error.toString(), colorText: Colors.white);
+      Get.snackbar('Google', 'Network Error', colorText: Colors.black);
 
       print(error);
     } finally {

@@ -63,10 +63,10 @@ class RegisterController extends GetxController {
       // Navigate to the home page after successful sign up
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
 
-      Get.snackbar('SignUp', 'successful register', colorText: Colors.white);
+      Get.snackbar('SignUp', 'successful register', colorText: Colors.black);
     } catch (e) {
       // Handle sign up errors
-      Get.snackbar('SignUp', e.toString(), colorText: Colors.white);
+      Get.snackbar('SignUp', e.toString(), colorText: Colors.black);
 
       print("Error signing up: $e");
     } finally {

@@ -83,7 +83,7 @@ class LoginScreen extends StatelessWidget {
                             onPressed: () {
                               loginC.signInWithGoogle(context);
                             },
-                            txtButton: 'Gog'.tr,
+                            txtButton: ' Google'.tr,
                             color: AppColors.secondary,
                             icon: Icon(
                               FontAwesome.google,

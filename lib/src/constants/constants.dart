@@ -25,7 +25,7 @@ const BorderRadius receiverBorder = BorderRadius.only(
 
 const String darkLogo = "assets/chatgpt_dark.png";
 const String lightLogo = "assets/chatgpt_light.png";
-const String apiKey = "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";
+const String apiKey = "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";
 
 //
 List<String> categories = [
@@ -37,9 +37,37 @@ List<String> categories = [
   'Dessert',
   'Insalatona',
 ];
-List<String> ditetype = ['Tutte', 'Onnivoro', 'vegetariano', 'Vegan'];
 
-const String dataProtectionText = '''
+final Map<String, String> defaultImages = {
+  'poke bowl': 'assets/images/rec2.png',
+  'contorno': 'assets/images/rec3.png',
+  'insalatona': 'assets/images/rec5.png',
+  'dessert': 'assets/images/rec6.png',
+  'panino': 'assets/images/rec7.png',
+  'primo': 'assets/images/rec8.png',
+  'secondo': 'assets/images/rec9.png'
+  // Add more images as needed
+};
+final List chipsimage = [
+  'assets/images/rec8.png',
+  'assets/images/rec9.png',
+  'assets/images/rec3.png',
+  'assets/images/rec7.png',
+  'assets/images/rec2.png',
+  'assets/images/rec6.png',
+  'assets/images/rec5.png'
+  // Add more images as needed
+];
+final List images = [
+  'assets/images/diet1.png',
+  'assets/images/diet2.png',
+  'assets/images/diet3.png',
+  'assets/images/diet4.png',
+];
+List<String> ditetype = ['Tutte', 'Onnivoro', 'Vegetariano', 'Vegano'];
+
+const String dataProtectionText =
+    '''
 
 Introduzione\n
 Con la seguente dichiarazione sulla protezione dei dati, desideriamo informarti sui
@@ -64,7 +92,7 @@ Tipi di dati trattati\n
   ● Dati di utilizzo (ad es. Siti Web visitati, interesse per i contenuti, tempi di
 accesso).\n
 Categorie di interessati\n
-● Partner di comunicazione.
+  ● Partner di comunicazione.
   ● Utenti (ad es. Visitatori del sito Web, utenti di servizi online).
 Finalità del trattamento
   ● Richieste di contatto e comunicazione.\n
@@ -75,7 +103,7 @@ disposizioni del GDPR possono essere applicate le norme nazionali sulla protezio
 dei dati nel proprio o nel nostro paese di residenza e domicilio. Qualora in singoli
 casi si applichino anche basi legali più specifiche, vi informeremo nella dichiarazione
 sulla protezione dei dati.\n
-  ● Consenso (art. 6 cpv. 1 lett. 1 lett. A GDPR) – L’interessato ha dato il proprio
+  ● Consenso (art. 6 cpv. 1 lett. 1 lett. A GDPR)  L’interessato ha dato il proprio
 consenso al trattamento dei propri dati personali per uno scopo specifico o
 diversi scopi specifici.
   ● Adempimento del contratto e indagini precontrattuali (Art. 6 Paragrafo 1 S. 1
@@ -320,7 +348,8 @@ dati personali. Il termine va molto lontano e copre praticamente ogni
 trattamento di dati, che si tratti di raccogliere, valutare, archiviare, trasmettere
 o eliminare.
   ''';
-const String Appdata = '''
+const String Appdata =
+    '''
 PiattoPronto rappresenta un'avanguardia nel mondo delle applicazioni culinarie, distaccandosi
 dalle tradizionali app di ricette grazie all'impiego dell'intelligenza artificiale (AI). Sviluppata per
 servire da fonte di ispirazione culinaria, offre agli utenti suggerimenti personalizzati che si
@@ -343,7 +372,8 @@ piacere della scoperta gastronomica con la consapevolezza ambientale. Attraverso
 dell'AI, l'applicazione mira a trasformare il modo in cui pensiamo al cibo, promuovendo una
 cucina creativa, personalizzata e rispettosa del pianeta
  ''';
-const String Disclaimer = ''' 
+const String Disclaimer =
+    ''' 
 Importante: Prima di utilizzare l'applicazione PiattoPronto, leggere attentamente il
 seguente disclaimer.\n
 PiattoPronto è un'applicazione di creazione ricette alimentata da intelligenza

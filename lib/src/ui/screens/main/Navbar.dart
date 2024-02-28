@@ -40,6 +40,7 @@ class _NavbarState extends State<Navbar> {
               currentIndex: navC.index.value,
               onTap: (index) {
                 navC.setIndex(index);
+                setState(() {});
               },
               type: BottomNavigationBarType.fixed,
               items: [

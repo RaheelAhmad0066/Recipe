@@ -45,28 +45,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     _bannerAd.load();
   }
+
+  bool isLoading = false;
 // delete account
-  Future<void> deleteAccount() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      String id = user!.uid;
-      if (user != null) {
-        await user.delete();
-        //delete user data in database
+
+  void deleteAccount() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        await user.delete().then((value) => Get.offAll(LoginScreen()));
         await FirebaseFirestore.instance
             .collection('diets')
-            .doc(id)
+            .doc(user.uid)
             .delete()
             .then((value) => Get.offAll(LoginScreen()));
-        Get.snackbar(
-          'Account',
-          'Delete',
-        );
-      } else {
-        print('user not delete');
+        Get.snackbar('Account', 'User account deleted successfully.');
+        print('User account deleted successfully.');
+      } catch (e) {
+        Get.snackbar('Error', e.toString());
       }
-    } catch (e) {
-      print(e);
+    } else {
+      print('No user signed in.');
     }
   }
 
@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: h1 * 0.02),
                   Text(
-                    user!.displayName.toString() ?? 'Piatto Proto',
+                    user != null ? user!.displayName.toString() : '',
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
@@ -114,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: h1 * 0.01),
                   buildProfileTile(
-                      'politica sulla riservatezza'.tr, Iconsax.security, () {
+                      'Politica sulla riservatezza'.tr, Iconsax.security, () {
                     showPrivacyPolicySheet(context);
                   }),
                   buildProfileTile(
@@ -153,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      color: AppColors.bgColor,
+      color: Colors.white,
       elevation: 3,
       child: ListTile(
         title: Text(title),
@@ -221,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               onPressed: () {
                 deleteAccount();
-
+                Get.off(LoginScreen());
                 Navigator.pop(context);
               },
               child: const Text(
@@ -249,7 +249,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
-                textAlign: TextAlign.center,
               ),
               for (String paragraph in dataProtectionText.split('\n\n\n\n'))
                 Padding(
@@ -260,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.normal,
                       fontSize: 17,
                     ),
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.start,
                   ),
                 ),
             ],
@@ -284,7 +283,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
-                textAlign: TextAlign.center,
               ),
               for (String paragraph in Disclaimer.split('\n\n\n\n'))
                 Padding(
@@ -295,7 +293,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.normal,
                       fontSize: 17,
                     ),
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.start,
                   ),
                 ),
             ],
@@ -319,7 +317,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
-                textAlign: TextAlign.center,
               ),
               for (String paragrap in Appdata.split('\n\n'))
                 Padding(
@@ -330,7 +327,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.normal,
                       fontSize: 17,
                     ),
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.start,
                   ),
                 ),
             ],

@@ -262,6 +262,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animate:
+    dependency: "direct main"
+    description:
+      name: flutter_animate
+      sha256: "7c8a6594a9252dad30cc2ef16e33270b6248c4dedc3b3d06c86c4f3f4dc05ae5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -278,6 +286,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_shaders:
+    dependency: transitive
+    description:
+      name: flutter_shaders
+      sha256: "02750b545c01ff4d8e9bbe8f27a7731aa3778402506c67daa1de7f5fc3f4befe"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -286,6 +302,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.0"
+  flutter_staggered_animations:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_animations
+      sha256: "81d3c816c9bb0dca9e8a5d5454610e21ffb068aedb2bde49d2f8d04f75538351"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -336,6 +360,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.6.6"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: f0b8d115a13ecf827013ec9fc883390ccc0e87a96ed5347a3114cac177ef18e8
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
   google_identity_services_web:
     dependency: transitive
     description:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piatoopronto/src/ui/screens/main/Navbar.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../../../constants/colors.dart';
 import '../../widgets/coustom_app_widget.dart';
 import '../../widgets/helper_widget.dart';
@@ -12,6 +12,7 @@ class Privacypolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size mq = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Color(0xffFDF8F6),
       appBar: CustomAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -24,13 +25,6 @@ class Privacypolicy extends StatelessWidget {
               height: mq.height * 0.2,
               width: mq.width * 0.5,
               decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      offset: Offset(1, 2),
-                    )
-                  ],
                   color: Color(0xffFDF8F6),
                   borderRadius: BorderRadius.circular(12)),
               child: Image.asset('assets/images/privacyimage.png'),
@@ -44,7 +38,7 @@ class Privacypolicy extends StatelessWidget {
             height: mq.height * 0.3,
             child: Text(
               'PiattoPronto è l\'app ideale per chi ama il risparmio e la sostenibilità.Aiuta a ridurre gli sprechi alimentari, suggerendo ricette creative basate su ciò che hai già in dispensa',
-              style: TextStyle(color: Colors.grey, fontSize: 19),
+              style: GoogleFonts.roboto(fontSize: 18, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ),

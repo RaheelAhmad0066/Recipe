@@ -18,7 +18,6 @@ void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure that Flutter is initialized before calling Firebase.initializeApp()
   await Firebase.initializeApp(); // Wait for Firebase to be initialized
-
   await Get.putAsync(() async => await SharedPreferences.getInstance());
   runApp(MyApp());
 }
@@ -46,8 +45,10 @@ class MyApp extends StatelessWidget {
               Locale(sharedPreferences.getString('languageCode') ?? 'it', 'IT'),
           fallbackLocale: Locale('en', 'US'),
           theme: ThemeData(
-              fontFamily: 'Inter',
-              appBarTheme:const AppBarTheme(
+              backgroundColor: Colors.white,
+              primaryColor: Colors.white,
+              fontFamily: 'Fredoka',
+              appBarTheme: const AppBarTheme(
                 iconTheme: IconThemeData(color: Colors.white),
               )),
           defaultTransition: Transition.native,

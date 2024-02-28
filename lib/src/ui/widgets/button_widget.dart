@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:piatoopronto/src/constants/colors.dart';
 import '../utils/helper_util.dart';
 
@@ -23,40 +24,41 @@ class Button extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
           width: width,
-          height: 60,
+          height: 54,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                primary: disable ? bgcolor.withOpacity(0.7) : color,
               ),
-              primary: disable ? bgcolor.withOpacity(0.7) : color,
-            ),
-            onPressed: () {
-              if (!disable) {
-                onPressed();
-              }
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Image.asset(
-                  'assets/images/onboarding.png',
-                  width: 60,
+              onPressed: () {
+                if (!disable) {
+                  onPressed();
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/onboarding.png',
+                      width: 40,
+                    ),
+                    Text(txtButton,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 17)),
+                  ],
                 ),
-                SizedBox(width: 8), // Adjust spacing here
-                Text(
-                  txtButton,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: disable ? Colors.white : Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 23,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ).animate().scaleXY(
+                  begin: 0,
+                  end: 1,
+                  delay: Duration() + 300.ms,
+                  duration: Duration(),
+                  curve: Curves.easeInOutCubic)),
         );
       },
     );
@@ -84,35 +86,33 @@ class ButtonIcon extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
           width: width,
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: 54,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: color,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32),
+              style: ElevatedButton.styleFrom(
+                primary: color,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32),
+                ),
               ),
-            ),
-            onPressed: onPressed,
-            child: Padding(
-              padding:const EdgeInsets.symmetric(vertical: 10.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(child: icon),
-                const  SizedBox(width: 8), // Adjust spacing here
-                  Text(
-                    txtButton,
-                    maxLines: 1,
-                    style:const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+              onPressed: onPressed,
+              child: SizedBox(
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    icon,
+                    Text(txtButton,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 17)),
+                  ],
+                ),
+              ).animate().scaleXY(
+                  begin: 0,
+                  end: 1,
+                  delay: Duration() + 300.ms,
+                  duration: Duration(),
+                  curve: Curves.easeInOutCubic)),
         );
       },
     );

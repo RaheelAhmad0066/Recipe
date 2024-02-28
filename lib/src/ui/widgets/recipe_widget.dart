@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,6 +13,16 @@ class RecipeWidget extends StatelessWidget {
   final String defaultimage;
   RecipeWidget({required this.dataa, required this.defaultimage});
 
+  void deleteDocument(DocumentSnapshot snapshot) async {
+    String id = snapshot.id;
+    try {
+      await FirebaseFirestore.instance.collection('diets').doc(id).delete();
+      print('Document deleted successfully');
+    } catch (error) {
+      print('Error deleting document: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -25,123 +36,138 @@ class RecipeWidget extends StatelessWidget {
                 context: context,
                 builder: (context) => LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius:const BorderRadiusDirectional.only(
-                          topEnd: Radius.circular(12),
-                          topStart: Radius.circular(12),
+                    return AnimatedContainer(
+                      duration: Duration(seconds: 1),
+                      curve: Curves.linear,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadiusDirectional.only(
+                            topEnd: Radius.circular(12),
+                            topStart: Radius.circular(12),
+                          ),
+                          color: Colors.white,
                         ),
-                        color: Colors.grey.withOpacity(0.1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                             const SizedBox(
-                                width: 80,
-                                child: Divider(
-                                  thickness: 4,
-                                  color: Colors.black,
+                        child: Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  width: 80,
+                                  child: Divider(
+                                    thickness: 4,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              ),
-                           const   SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Tipo di Dieta:',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    dataa['type'],
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'portata:',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    dataa['coursetype'],
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Numero di porzioni:',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    dataa['people'].toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(),
-                                  ),
-                                ],
-                              ),
-                            const  SizedBox(
-                                height: 30,
-                              ),
-                              Text(
-                                dataa['recipe'],
-                                style:const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15,
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  docsaved(
-                                    icon: Iconsax.copy,
-                                    title: 'Copy',
-                                    ontap: () {
-                                      Clipboard.setData(
-                                        ClipboardData(text: dataa['recipe']),
-                                      );
-                                      Fluttertoast.showToast(msg: 'Copy');
-                                    },
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Tipo di Dieta:',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      dataa['type'],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'portata:',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      dataa['coursetype'],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Numero di porzioni:',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      dataa['people'].toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                  dataa['recipe'],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 17,
                                   ),
-                                  docsaved(
-                                    icon: Iconsax.share,
-                                    title: 'Share',
-                                    ontap: () {
-                                      Share.share(dataa['recipe']);
-                                      Fluttertoast.showToast(msg: 'Copy');
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    docsaved(
+                                      icon: Iconsax.copy,
+                                      title: 'Copy',
+                                      ontap: () {
+                                        Clipboard.setData(
+                                          ClipboardData(text: dataa['recipe']),
+                                        );
+                                        Fluttertoast.showToast(msg: 'Copy');
+                                      },
+                                    ),
+                                    docsaved(
+                                      icon: Iconsax.share,
+                                      title: 'Share',
+                                      ontap: () {
+                                        Share.share(dataa['recipe']);
+                                        Fluttertoast.showToast(msg: 'Copy');
+                                      },
+                                    ),
+                                    docsaved(
+                                      icon: Icons.delete_outline,
+                                      title: 'Delete',
+                                      ontap: () {
+                                        deleteDocument(dataa);
+                                        Fluttertoast.showToast(msg: 'Delete');
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -157,7 +183,7 @@ class RecipeWidget extends StatelessWidget {
                   border: Border.all(color: Colors.grey)),
               child: Column(
                 children: [
-                 const SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   CircleAvatar(
@@ -173,7 +199,7 @@ class RecipeWidget extends StatelessWidget {
                   ),
                   Text(
                     dataa['type'],
-                    style:const TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.normal,
                         fontSize: 19),
@@ -182,7 +208,7 @@ class RecipeWidget extends StatelessWidget {
                     width: constraints.maxWidth * 0.7,
                     child: Text(
                       dataa['recipe'],
-                      style:const TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff6ff1d0),
                           fontWeight: FontWeight.normal,
                           fontSize: 13),
@@ -196,7 +222,7 @@ class RecipeWidget extends StatelessWidget {
                   ),
                   Text(
                     dataa['coursetype'],
-                    style:const TextStyle(
+                    style: const TextStyle(
                         color: Color(0xffffffff),
                         fontWeight: FontWeight.normal),
                   ),

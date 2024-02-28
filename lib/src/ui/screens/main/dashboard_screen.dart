@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../../constants/colors.dart';
 import '../../utils/helper_util.dart';
 import '../../widgets/coustom_app_widget.dart';
@@ -18,14 +21,12 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   String selectedCategory = 'All';
-
+  String searcdescription = '';
   Future<List<DocumentSnapshot>> fetchDataFromFirebase() async {
     String? userId = await getCurrentUserId();
-
     if (userId != null) {
       CollectionReference diets =
           FirebaseFirestore.instance.collection('diets');
-
       if (selectedCategory == 'All') {
         QuerySnapshot querySnapshot =
             await diets.where('userId', isEqualTo: userId).get();
@@ -76,34 +77,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  DateTime? lastAdShownTime;
+
   void showinterstedadd() {
     if (intersialad != null) {
-      intersialad!.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (ad) {
-          ad.dispose();
-          _createintersestadd();
-        },
-        onAdFailedToShowFullScreenContent: (ad, error) {
-          ad.dispose();
-          _createintersestadd();
-        },
-      );
+      if (lastAdShownTime == null ||
+          DateTime.now().difference(lastAdShownTime!) >= Duration(minutes: 5)) {
+        intersialad!.fullScreenContentCallback = FullScreenContentCallback(
+          onAdDismissedFullScreenContent: (ad) {
+            ad.dispose();
+            _createintersestadd();
+          },
+          onAdFailedToShowFullScreenContent: (ad, error) {
+            ad.dispose();
+            _createintersestadd();
+          },
+        );
 
-      intersialad!.show();
-    } else {}
+        intersialad!.show();
+        lastAdShownTime = DateTime.now(); // Update the last ad shown time
+      }
+    }
   }
 
   final searchcontroler = TextEditingController();
-  final Map<String, String> defaultImages = {
-    'poke bowl': 'assets/images/rec2.png',
-    'contorno': 'assets/images/rec3.png',
-    'insalatona': 'assets/images/rec5.png',
-    'dessert': 'assets/images/rec6.png',
-    'panino': 'assets/images/rec7.png',
-    'primo': 'assets/images/rec8.png',
-    'secondo': 'assets/images/rec9.png'
-    // Add more images as needed
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +128,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           });
                         },
                         decoration: InputDecoration(
+                          suffixIcon: Icon(Iconsax.search_normal),
                           hintText: 'Cerca ricetta',
                           isDense: true,
                           enabledBorder: OutlineInputBorder(
@@ -189,28 +187,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ],
                         );
                       }
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
-                          mainAxisExtent: 215,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 2,
-                        ),
-                        itemCount: data.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          String courseType = data[index]['coursetype'];
-                          String imageUrl =
-                              defaultImages[courseType.toLowerCase()] ??
-                                  'assets/images/onboarding.png';
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 0),
-                            child: RecipeWidget(
-                                dataa: data[index], defaultimage: imageUrl),
-                          );
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          // Add your refresh logic here, e.g., refetch data from Firebase
+                          await fetchDataFromFirebase();
                         },
+                        child: AnimationLimiter(
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              mainAxisExtent: 215,
+                              mainAxisSpacing: 10,
+                            ),
+                            itemCount: data.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              String courseType = data[index]['coursetype'];
+                              String imageUrl =
+                                  defaultImages[courseType.toLowerCase()] ??
+                                      'assets/images/onboarding.png';
+                              return AnimationConfiguration.staggeredGrid(
+                                position: index,
+                                duration: const Duration(milliseconds: 375),
+                                columnCount: data.length,
+                                child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                    child: RecipeWidget(
+                                        dataa: data[index],
+                                        defaultimage: imageUrl),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       );
                     }
                   },
@@ -232,30 +246,48 @@ Widget buildFilter(List<String> choices, String selectedChoice,
       children: List<Widget>.generate(
         choices.length,
         (int index) {
-          return Container(
-            margin: EdgeInsets.only(right: 12, top: 16),
-            child: ChoiceChip(
-              pressElevation: 0,
-              checkmarkColor: Colors.white,
-              backgroundColor: AppColors.form,
-              selectedColor: bgcolor,
-              side: BorderSide(color: bgcolor),
-              labelStyle: selectedChoice == choices[index]
-                  ? TextStyle(color: Colors.white, fontWeight: FontWeight.w700)
-                  : TextStyle(
-                      color: AppColors.secondaryText,
-                      fontWeight: FontWeight.w500,
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              child: ChoiceChip(
+                pressElevation: 0,
+
+                visualDensity: VisualDensity.comfortable,
+                showCheckmark: false,
+                // checkmarkColor: Colors.white,
+                // backgroundColor: AppColors.form,
+                selectedColor: bgcolor,
+                side: BorderSide(color: bgcolor, style: BorderStyle.solid),
+                labelStyle: selectedChoice == choices[index]
+                    ? TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w700)
+                    : TextStyle(
+                        color: AppColors.secondaryText,
+                        fontWeight: FontWeight.w500,
+                      ),
+                // labelPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                label: Row(
+                  children: [
+                    Image.asset(
+                      images[index],
+                      width: 30,
                     ),
-              labelPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-              label: Text(choices[index]),
-              selected: selectedChoice == choices[index],
-              onSelected: (bool selected) {
-                onSelectionChanged(choices[index]);
-              },
+                    Text(choices[index]),
+                  ],
+                ),
+                selected: selectedChoice == choices[index],
+                onSelected: (bool selected) {
+                  onSelectionChanged(choices[index]);
+                },
+              ),
             ),
           );
         },
-      ).toList(),
+      ).animate(interval: 100.ms, delay: Duration(microseconds: 1000)).slideX(
+          duration: Duration(milliseconds: 1000),
+          begin: 3,
+          end: 0,
+          curve: Curves.easeInOutSine),
     ),
   );
 }

@@ -43,6 +43,7 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
   var data;
   void messagedata;
   bool isloadedd = false;
+  bool isDatasaved = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +100,7 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(18.0),
                               child: Text(
-                                'Benvenuti nell\'app Piattopronto! Immergiti in un mondo di delizie culinarie, esplora le ricette infinite e assapora la gioia di cucinare. ',
+                                'Benvenuti nell\'app Piattopronto! Immergiti in un mondo di delizie culinarie, esplora le ricette infinite e assapora la gioia di cucinare.',
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .bodyMedium!
@@ -164,7 +165,11 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
                                                     text: data.content))
                                                 .then((value) =>
                                                     Fluttertoast.showToast(
-                                                        msg: 'copy'));
+                                                        msg: 'copy',
+                                                        backgroundColor:
+                                                            bgcolor,
+                                                        gravity: ToastGravity
+                                                            .CENTER));
                                           },
                                         ),
                                         docsaved(
@@ -193,6 +198,13 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
             padding: const EdgeInsets.all(18.0),
             child: Button(
                 onPressed: () async {
+                  if (isDatasaved) {
+                    Fluttertoast.showToast(
+                        msg: 'Already saved',
+                        gravity: ToastGravity.CENTER,
+                        backgroundColor: bgcolor);
+                    return; // Exit onPressed function
+                  }
                   CollectionReference diets =
                       FirebaseFirestore.instance.collection('diets');
                   String? userId = await getCurrentUserId();
@@ -206,6 +218,9 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
                       'recipe': message.content,
                       'ingredients': widget.data,
                       'timestamp': FieldValue.serverTimestamp(),
+                    });
+                    setState(() {
+                      isDatasaved = true;
                     });
                   } else {
                     showDialog(
@@ -228,7 +243,10 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
                       },
                     );
                   }
-                  Fluttertoast.showToast(msg: 'Saved');
+                  Fluttertoast.showToast(
+                      msg: 'Saved',
+                      gravity: ToastGravity.CENTER,
+                      backgroundColor: bgcolor);
                 },
                 txtButton: 'Componi Ricetta',
                 color: bgcolor),
