@@ -28,17 +28,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (userId != null) {
       CollectionReference diets =
           FirebaseFirestore.instance.collection('diets');
-      if (selectedCategory == 'All') {
-        QuerySnapshot querySnapshot =
-            await diets.where('userId', isEqualTo: userId).get();
-        return querySnapshot.docs;
-      } else {
-        QuerySnapshot querySnapshot = await diets
-            .where('userId', isEqualTo: userId)
-            .where('type', isEqualTo: selectedCategory)
-            .get();
-        return querySnapshot.docs;
+      Query query = diets.where('userId', isEqualTo: userId);
+
+      if (selectedCategory != 'All') {
+        query = query.where('type', isEqualTo: selectedCategory);
       }
+
+      if (searcdescription.isNotEmpty) {
+        // Assuming 'recipe' is a field in your documents that you want to search against
+        query = query.where('coursetype', isEqualTo: searcdescription);
+      }
+
+      QuerySnapshot querySnapshot = await query.get();
+      return querySnapshot.docs;
     } else {
       // Handle the case when the user is not logged in
       return [];
@@ -127,7 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         TextField(
                           onChanged: (v) {
                             setState(() {
-                              selectedCategory = v;
+                              searcdescription = v;
                             });
                           },
                           decoration: InputDecoration(

@@ -215,7 +215,7 @@ class RecipeWidget extends StatelessWidget {
                   SizedBox(
                     width: constraints.maxWidth * 0.7,
                     child: Text(
-                      generateTitle(dataa['recipe']),
+                      dataa['recipe'],
                       style: const TextStyle(
                           color: Color(0xff6ff1d0),
                           fontWeight: FontWeight.normal,
