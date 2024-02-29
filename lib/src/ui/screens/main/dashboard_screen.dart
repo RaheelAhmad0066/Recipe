@@ -22,6 +22,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   String selectedCategory = 'All';
   String searcdescription = '';
+
   Future<List<DocumentSnapshot>> fetchDataFromFirebase() async {
     String? userId = await getCurrentUserId();
     if (userId != null) {
@@ -267,7 +268,10 @@ Widget buildFilter(List<String> choices, String selectedChoice,
                   children: [
                     Image.asset(
                       images[index],
-                      width: 30,
+                      width: 25,
+                    ),
+                    SizedBox(
+                      width: 5,
                     ),
                     Text(choices[index]),
                   ],

@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: h1 * 0.02),
                   Text(
-                    user != null ? user!.displayName.toString() : '',
+                    user!.displayName.toString(),
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
