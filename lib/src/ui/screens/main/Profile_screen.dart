@@ -54,15 +54,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (user != null) {
       try {
-        await user.delete().then((value) => Get.offAll(LoginScreen()));
+        // Delete Firestore data associated with the user
         await FirebaseFirestore.instance
             .collection('diets')
             .doc(user.uid)
-            .delete()
-            .then((value) => Get.offAll(LoginScreen()));
+            .delete();
+
+        await user.delete();
+        print('Firebase Authentication user account deleted successfully.');
+        print('Firestore data deleted successfully.');
+
+        // Show success message
         Get.snackbar('Account', 'User account deleted successfully.');
         print('User account deleted successfully.');
+
+        // Navigate to LoginScreen
+        Get.offAll(LoginScreen());
       } catch (e) {
+        // Show error message if deletion fails
         Get.snackbar('Error', e.toString());
       }
     } else {
@@ -259,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.normal,
                       fontSize: 17,
                     ),
-                    textAlign: TextAlign.start,
+                    textAlign: TextAlign.justify,
                   ),
                 ),
             ],
@@ -293,7 +302,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.normal,
                       fontSize: 17,
                     ),
-                    textAlign: TextAlign.start,
+                    textAlign: TextAlign.justify,
                   ),
                 ),
             ],
@@ -327,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.normal,
                       fontSize: 17,
                     ),
-                    textAlign: TextAlign.start,
+                    textAlign: TextAlign.justify,
                   ),
                 ),
             ],

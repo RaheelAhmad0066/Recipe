@@ -11,6 +11,7 @@ import 'package:piatoopronto/src/ui/widgets/button_widget.dart';
 import 'package:piatoopronto/src/ui/widgets/coustom_app_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../constants/constants.dart';
 import '../../../core/providers/message_provider.dart';
 import '../../utils/copy_message.dart';
 import '../../widgets/recipeshare.dart';
@@ -44,6 +45,7 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
   void messagedata;
   bool isloadedd = false;
   bool isDatasaved = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +93,7 @@ class _recipegenratescreenState extends State<recipegenratescreen> {
                     } else {
                       messagedata = provider;
                       Message data = provider.messages[index];
+
                       if (data.role == "user") {
                         return Align(
                           alignment: Alignment

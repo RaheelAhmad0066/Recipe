@@ -1,5 +1,6 @@
 import '../../Expo/exports.dart';
 
+String title = '';
 //app open ads
 final String App_open_ads = 'ca-app-pub-7184732104842922/8971540219';
 // rewarded ads
@@ -25,7 +26,7 @@ const BorderRadius receiverBorder = BorderRadius.only(
 
 const String darkLogo = "assets/chatgpt_dark.png";
 const String lightLogo = "assets/chatgpt_light.png";
-const String apiKey = "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";
+const String apiKey = "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";
 
 //
 List<String> categories = [
@@ -66,8 +67,7 @@ final List images = [
 ];
 List<String> ditetype = ['Tutte', 'Onnivoro', 'Vegetariano', 'Vegano'];
 
-const String dataProtectionText =
-    '''
+const String dataProtectionText = '''
 
 Introduzione\n
 Con la seguente dichiarazione sulla protezione dei dati, desideriamo informarti sui
@@ -92,7 +92,7 @@ Tipi di dati trattati\n
   ● Dati di utilizzo (ad es. Siti Web visitati, interesse per i contenuti, tempi di
 accesso).\n
 Categorie di interessati\n
-  ● Partner di comunicazione.
+● Partner di comunicazione.
   ● Utenti (ad es. Visitatori del sito Web, utenti di servizi online).
 Finalità del trattamento
   ● Richieste di contatto e comunicazione.\n
@@ -348,8 +348,7 @@ dati personali. Il termine va molto lontano e copre praticamente ogni
 trattamento di dati, che si tratti di raccogliere, valutare, archiviare, trasmettere
 o eliminare.
   ''';
-const String Appdata =
-    '''
+const String Appdata = '''
 PiattoPronto rappresenta un'avanguardia nel mondo delle applicazioni culinarie, distaccandosi
 dalle tradizionali app di ricette grazie all'impiego dell'intelligenza artificiale (AI). Sviluppata per
 servire da fonte di ispirazione culinaria, offre agli utenti suggerimenti personalizzati che si
@@ -372,8 +371,7 @@ piacere della scoperta gastronomica con la consapevolezza ambientale. Attraverso
 dell'AI, l'applicazione mira a trasformare il modo in cui pensiamo al cibo, promuovendo una
 cucina creativa, personalizzata e rispettosa del pianeta
  ''';
-const String Disclaimer =
-    ''' 
+const String Disclaimer = ''' 
 Importante: Prima di utilizzare l'applicazione PiattoPronto, leggere attentamente il
 seguente disclaimer.\n
 PiattoPronto è un'applicazione di creazione ricette alimentata da intelligenza

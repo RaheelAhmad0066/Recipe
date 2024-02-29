@@ -112,87 +112,84 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: constraints.maxHeight * 0.02,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      TextField(
-                        onChanged: (v) {
-                          setState(() {
-                            selectedCategory = v;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Iconsax.search_normal),
-                          hintText: 'Cerca ricetta',
-                          isDense: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: bgcolor),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: bgcolor),
+            child: RefreshIndicator(
+              onRefresh: fetchDataFromFirebase,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: constraints.maxHeight * 0.02,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        TextField(
+                          onChanged: (v) {
+                            setState(() {
+                              selectedCategory = v;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Iconsax.search_normal),
+                            hintText: 'Cerca ricetta',
+                            isDense: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: bgcolor),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: bgcolor),
+                            ),
                           ),
                         ),
-                      ),
-                      buildFilter(
-                        ['Tutte', 'Onnivoro', 'Vegetariano', 'Vegano'],
-                        selectedCategory,
-                        (newValue) {
-                          setState(() {
-                            selectedCategory = newValue;
-                            showinterstedadd();
-                          });
-                        },
-                      ),
-                    ],
+                        buildFilter(
+                          ['Tutte', 'Onnivoro', 'Vegetariano', 'Vegano'],
+                          selectedCategory,
+                          (newValue) {
+                            setState(() {
+                              selectedCategory = newValue;
+                              showinterstedadd();
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: constraints.maxHeight * 0.02,
-                ),
-                FutureBuilder(
-                  future: fetchDataFromFirebase(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SpinKitThreeBounce(
-                        color: bgcolor,
-                        size: 20,
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      List<DocumentSnapshot> data =
-                          snapshot.data as List<DocumentSnapshot>;
-                      if (data.isEmpty) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 60,
-                            ),
-                            Image.asset(
-                              'assets/images/rec1.png',
-                              width: 200,
-                            ),
-                            Text(
-                              'I dati non sono stati trovati!',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
+                  SizedBox(
+                    height: constraints.maxHeight * 0.02,
+                  ),
+                  FutureBuilder(
+                    future: fetchDataFromFirebase(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return SpinKitThreeBounce(
+                          color: bgcolor,
+                          size: 20,
                         );
-                      }
-                      return RefreshIndicator(
-                        onRefresh: () async {
-                          // Add your refresh logic here, e.g., refetch data from Firebase
-                          await fetchDataFromFirebase();
-                        },
-                        child: AnimationLimiter(
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        List<DocumentSnapshot> data =
+                            snapshot.data as List<DocumentSnapshot>;
+                        if (data.isEmpty) {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: 60,
+                              ),
+                              Image.asset(
+                                'assets/images/rec1.png',
+                                width: 200,
+                              ),
+                              Text(
+                                'I dati non sono stati trovati!',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          );
+                        }
+                        return AnimationLimiter(
                           child: GridView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
@@ -224,12 +221,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               );
                             },
                           ),
-                        ),
-                      );
-                    }
-                  },
-                )
-              ],
+                        );
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
           );
         },

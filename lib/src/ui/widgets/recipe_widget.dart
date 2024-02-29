@@ -23,6 +23,14 @@ class RecipeWidget extends StatelessWidget {
     }
   }
 
+  String generateTitle(String content) {
+    // Example: Extracting the first few words from the content as the title
+    List<String> words = content.split(' ');
+
+    String title = words.join(' ').substring(60, 400);
+    return title;
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -207,7 +215,7 @@ class RecipeWidget extends StatelessWidget {
                   SizedBox(
                     width: constraints.maxWidth * 0.7,
                     child: Text(
-                      dataa['recipe'],
+                      generateTitle(dataa['recipe']),
                       style: const TextStyle(
                           color: Color(0xff6ff1d0),
                           fontWeight: FontWeight.normal,
