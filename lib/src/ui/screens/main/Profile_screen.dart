@@ -1,14 +1,20 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:get/get.dart';
+import 'package:piatoopronto/src/ui/widgets/coustom_app_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:piatoopronto/src/constants/colors.dart';
 import '../../../constants/constants.dart';
-import '../../utils/colors_util.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import '../auth/login_screen.dart';
+
+String assetPDFPath = "";
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -25,7 +31,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    getFileFromAsset("assets/files/privacypolicy.pdf").then((f) {
+      setState(() {
+        assetPDFPath = f.path;
+        print(assetPDFPath);
+      });
+    });
+    discl("assets/files/disclaimer.pdf").then((f) {
+      setState(() {
+        urlPDFPath = f.path;
+        print(assetPDFPath);
+      });
+    });
+    about("assets/images/About.pdf").then((f) {
+      setState(() {
+        abouta = f.path;
+        print(assetPDFPath);
+      });
+    });
     _loadBannerAd();
+  }
+
+  Future<File> getFileFromAsset(String asset) async {
+    try {
+      var data = await rootBundle.load(asset);
+      var bytes = data.buffer.asUint8List();
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/mypd.pdf");
+
+      File assetFile = await file.writeAsBytes(bytes);
+      return assetFile;
+    } catch (e) {
+      throw Exception("Error opening asset file");
+    }
+  }
+
+  Future<File> about(String asset) async {
+    try {
+      var data = await rootBundle.load(asset);
+      var bytes = data.buffer.asUint8List();
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/my.pdf");
+
+      File assetFile = await file.writeAsBytes(bytes);
+      return assetFile;
+    } catch (e) {
+      throw Exception("Error opening asset file");
+    }
+  }
+
+  Future<File> discl(String asset) async {
+    try {
+      var data = await rootBundle.load(asset);
+      var bytes = data.buffer.asUint8List();
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/mypdf.pdf");
+
+      File assetFile = await file.writeAsBytes(bytes);
+      return assetFile;
+    } catch (e) {
+      throw Exception("Error opening asset file");
+    }
   }
 
   void _loadBannerAd() {
@@ -45,6 +111,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     _bannerAd.load();
   }
+
+  String abouta = "";
+
+  String urlPDFPath = "";
 
   bool isLoading = false;
 // delete account
@@ -124,14 +194,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: h1 * 0.01),
                   buildProfileTile(
                       'Politica sulla riservatezza'.tr, Iconsax.security, () {
-                    showPrivacyPolicySheet(context);
+                    Get.to(privacy(asset: assetPDFPath));
                   }),
                   buildProfileTile(
                       'Disclaimer per PiattoPronto'.tr, Iconsax.danger, () {
-                    shoDiclimar(context);
+                    Get.to(privacy(asset: urlPDFPath));
                   }),
                   buildProfileTile('PiattoPronto'.tr, Iconsax.info_circle, () {
-                    showAboutAppSheet(context);
+                    Get.to(privacy(asset: abouta));
                   }),
                   buildProfileTile('Condividi l\'app'.tr, Iconsax.share, () {
                     shareApp();
@@ -244,68 +314,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void showPrivacyPolicySheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: <Widget>[
-              const Text(
-                'Dichiarazione sulla protezione dei dati',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              for (String paragraph in dataProtectionText.split('\n\n\n\n'))
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    paragraph,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 17,
-                    ),
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   void shoDiclimar(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: <Widget>[
-              const Text(
-                'Disclaimer per PiattoPronto',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              for (String paragraph in Disclaimer.split('\n\n\n\n'))
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    paragraph,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 17,
-                    ),
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-            ],
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          child: PDFView(
+            fitEachPage: true,
+            filePath: assetPDFPath, // Provide the path to your PDF file
+            // or you can use asset by providing assetPath
+            // assetPath: 'assets/sample.pdf',
+            enableSwipe: true,
+            swipeHorizontal: true,
+            autoSpacing: true,
+            pageFling: true,
+            onRender: (_pages) {
+              print('Rendered $_pages pages!');
+            },
+            onError: (error) {
+              print(error.toString());
+            },
+            onPageError: (page, error) {
+              print('Error while loading page $page: $error');
+            },
+            onViewCreated: (PDFViewController pdfViewController) {
+              // You can use the controller for various actions like controlling the PDF
+              // Eg. pdfViewController.setPage(0);
+            },
+            onPageChanged: (page, total) {
+              print('page change: $page/$total');
+            },
           ),
         );
       },
@@ -349,5 +388,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void shareApp() {
     Share.share(
         'Si prega di installare l\'app Piatto pronto'); // You can customize the share message
+  }
+}
+
+class privacy extends StatelessWidget {
+  const privacy({super.key, required this.asset});
+  final String asset;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(),
+      body: PDFView(
+        fitEachPage: true,
+        filePath: asset,
+        enableSwipe: true,
+        swipeHorizontal: false,
+        autoSpacing: false,
+        pageFling: false,
+        onRender: (_pages) {
+          print('Rendered $_pages pages!');
+        },
+        onError: (error) {
+          print(error.toString());
+        },
+        onPageError: (page, error) {
+          print('Error while loading page $page: $error');
+        },
+        onViewCreated: (PDFViewController pdfViewController) {
+          // You can use the controller for various actions like controlling the PDF
+          // Eg. pdfViewController.setPage(0);
+        },
+        onPageChanged: (page, total) {
+          print('page change: $page/$total');
+        },
+      ),
+    );
   }
 }

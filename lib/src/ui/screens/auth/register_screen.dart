@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:piatoopronto/src/ui/screens/main/Profile_screen.dart';
 
 import 'package:piatoopronto/src/ui/screens/main/privacypolicay_page.dart';
 
@@ -95,7 +96,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Text('Leggi e accetta la nostra'),
                             InkWell(
                               onTap: () {
-                                Get.to(privacypolicy());
+                                Get.to(privacy(
+                                  asset: assetPDFPath,
+                                ));
                               },
                               child: Text(
                                 'Privacy Policy',
