@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../ui/screens/main/Navbar.dart';
+
 class LoginController extends GetxController {
   final username = TextEditingController();
   final password = TextEditingController();
@@ -48,7 +50,8 @@ class LoginController extends GetxController {
         final UserCredential authResult =
             await _auth.signInWithCredential(credential);
         final User? user = authResult.user;
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => Navbar())));
         Get.snackbar('Google', 'successful Google signin',
             colorText: Colors.black);
         return user;
