@@ -8,6 +8,7 @@ import '../../../core/controllers/register_controller.dart';
 import '../../utils/helper_util.dart';
 
 import '../../widgets/helper_widget.dart';
+import '../main/privacypolicy.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -94,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Text('Leggi e accetta la nostra'),
                             InkWell(
                               onTap: () {
-                                Get.to(Privacypolicy());
+                                Get.to(privacypolicy());
                               },
                               child: Text(
                                 'Privacy Policy',

@@ -8,9 +8,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // Customize the background colora
       backgroundColor: bgcolor,
+      automaticallyImplyLeading: false,
       actions: [],
+      centerTitle: true,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -32,7 +33,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
-      centerTitle: true,
     );
   }
 }
